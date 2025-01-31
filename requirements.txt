@@ -1,0 +1,6 @@
+asgiref==3.8.1
+Django==5.1.5
+python-dotenv==1.0.1
+sqlparse==0.5.3
+redis~=5.2.1
+SQLAlchemy~=2.0.37
