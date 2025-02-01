@@ -1,9 +1,16 @@
+# TO-DO:
+# add password and email hashing functionality.
+# register route should redirect to recaptcha, then to confirmation page. email is sent to provided email.
+# if user verifies email, add to database else expire token.
+# token generation functionality.
+# custom error handlers.
+
 from django.http import JsonResponse
 import logging
 import json
 from app_config.settings.database import SessionLocal
 from applications.auth.auth_models import ClientUser
-
+from applications.shared.utils.hashing import hash_password
 
 logger= logging.getLogger('django')
 
@@ -52,11 +59,10 @@ def register(request):
             first_name=first_name,
             last_name=last_name,
             email=email,
-            password_hash=password,
+            password_hash= hash_password(password),
         )
 
-        session.add(new_user)
-        session.commit()
+        new_user.save(session)
 
         logger.info(f'Registration successful! User: {new_user.first_name} {new_user.last_name}')
         return JsonResponse({
